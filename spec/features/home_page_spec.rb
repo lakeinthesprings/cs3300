@@ -21,6 +21,22 @@ RSpec.feature "Projects", type: :feature do
     end
   end
 
+  context "Create new project" do
+    before(:each) do
+      visit new_project_path
+      within("form") do
+        fill_in "Title", with: ""
+      end
+    end
+
+    scenario "should fail" do
+      fill_in "Description", with: "Test description"
+      click_button "Create Project"
+      expect(page).to have_content("Title can't be blank")
+    end
+    
+  end
+
   context "Update project" do
     let(:project) { Project.create(title: "Test title", description: "Test content") }
     before(:each) do
@@ -53,4 +69,6 @@ RSpec.feature "Projects", type: :feature do
       expect(Project.count).to eq(0)
     end
   end
+
+
 end
